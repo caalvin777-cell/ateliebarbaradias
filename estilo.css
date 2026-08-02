@@ -102,14 +102,17 @@ nav a {
     margin: 0 10px;
     font-size: 20px;
 }
+
 .produtos {
     display: grid;
-    grid-template-columns: repeat(5, 220px);
+    grid-template-columns: repeat(4, 220px);
     gap: 30px;
-    justify-content: center;
-    margin: 0 auto;
-}
+    justify-content: start;
 
+    width: calc(100% - 380px);
+    margin-left: 30px;
+    margin-right: 380px;
+}
 #quem-somos + p {
     font-size: 18px;
     line-height: 1.6;
