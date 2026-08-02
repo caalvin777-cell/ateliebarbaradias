@@ -1,6 +1,9 @@
+import { produtos } from "./produtos.js";
 const listaProdutos = document.getElementById("lista-produtos");
 
 function mostrarProdutos(lista){
+    console.log("lista =", lista);
+console.log("É array?", Array.isArray(lista));
 listaProdutos.innerHTML = "";
 
 lista.forEach(produto => {
@@ -57,6 +60,9 @@ lista.forEach(produto => {
 });
 
 }
+console.log("tipo:", typeof produtos);
+console.log("é array?", Array.isArray(produtos));
+console.log(produtos);
 mostrarProdutos(produtos);
 
 document.getElementById("pesquisa").addEventListener("input", function(){

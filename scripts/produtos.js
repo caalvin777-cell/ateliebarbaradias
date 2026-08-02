@@ -627,3 +627,4 @@ const produtos = [
         "descricao": "Confeccionado com fio 100% e enchimento hipoalergênico. Altura 28cm."
     }
 ];
+export { produtos };
