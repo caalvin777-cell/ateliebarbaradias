@@ -1,3 +1,15 @@
+import { db } from "./firebase.js";
+
+import {
+    collection,
+    getDocs,
+    getDoc,
+    query,
+    where,
+    updateDoc,
+    doc
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 let carrinho = [];
 
 function abrirCarrinho() {
@@ -46,9 +58,18 @@ function atualizarCarrinho() {
 <div class="item-carrinho">
 
 <img
-src="imagens/${produto.pasta}/${produto.pasta}1.jpg"
-class="foto-carrinho"
-alt="${produto.nome}">
+    src="./imagens/${produto.pasta}/${produto.pasta}1.jpg"
+    class="foto-carrinho"
+    alt="${produto.nome}"
+    onerror="
+        if(this.src.endsWith('.jpg')){
+            this.src='./imagens/${produto.pasta}/${produto.pasta}1.jpeg';
+        }else if(this.src.endsWith('.jpeg')){
+            this.src='./imagens/${produto.pasta}/${produto.pasta}1.png';
+        }else{
+            this.src='./imagens/logo.png';
+        }
+    ">
 
 <h4>${produto.nome}</h4>
 
@@ -210,3 +231,11 @@ document.getElementById("cep").disabled = true;
 
 document.getElementById("resultado-frete").innerHTML =
     "📍 Retirada no Ateliê<br><strong>Frete Grátis</strong>";
+window.abrirCarrinho = abrirCarrinho;
+window.fecharCarrinho = fecharCarrinho;
+window.adicionarCarrinho = adicionarCarrinho;
+window.aumentarQuantidade = aumentarQuantidade;
+window.diminuirQuantidade = diminuirQuantidade;
+window.removerProduto = removerProduto;
+window.calcularFrete = calcularFrete;
+window.atualizarLinkWhatsapp = atualizarLinkWhatsapp;

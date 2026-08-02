@@ -140,11 +140,11 @@ de acordo com sua necessidade.
 
 <div class="rodape-carrinho">
     <h3 class="total-carrinho">Total: <span id="total-carrinho">R$ 0,00</span></h3>
-<a
-    href="https://wa.me/5511982747585"
+   <a
+    href="#"
     id="finalizar-whatsapp"
     class="botao-finalizar"
-    target="_blank">
+    onclick="atualizarLinkWhatsapp(); window.open(this.href,'_blank'); return false;">
     Finalizar Pedido no WhatsApp
 </a>
     <button onclick="fecharCarrinho()">
@@ -169,8 +169,9 @@ de acordo com sua necessidade.
         </a>
     </p>
 </section>
-<script src="scripts/produtos.js"></script>
-<script src="scripts/app.js"></script>
-<script src="scripts/carrinho.js"></script>
+<script type="module" src="scripts/firebase.js"></script>
+<script type="module" src="scripts/produtos.js"></script>
+<script type="module" src="scripts/app.js"></script>
+<script type="module" src="scripts/carrinho.js"></script>
 </body>
 </html>

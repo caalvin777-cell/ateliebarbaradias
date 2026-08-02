@@ -25,37 +25,38 @@ img {
     border-radius: 10px;
 }
 
-.produto {
-    background: white;
-    width: 220px;
-    padding: 20px;
-    margin: 0;
-    vertical-align: top;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    transition: transform 0.3s;
-    display: flex;
-    flex-direction: column;
+.produto{
+    background:white;
+    width:170px;
+    padding:10px;
+    min-height:430px;
+    margin:0;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+    display:flex;
+    flex-direction:column;
 }
+
 .produto:hover {
     transform: scale(1.03);
 }
 .produto p {
-    font-size: 23px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.35;
     color: #333;
 }
 .produto img {
-    width: 260px;
-    height: auto;
-    max-height: 240px;
-    object-fit: contain;
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    margin: 0 auto;
 }
 
 h2 {
-    color: #333;
-    font-size: 26px;
-    line-height: 1.2;
+    color:#333;
+    font-size:16px;
+    line-height:1.2;
+
 }
 
 .produto p {
@@ -104,14 +105,15 @@ nav a {
 }
 
 .produtos {
-    display: grid;
-    grid-template-columns: repeat(4, 220px);
-    gap: 30px;
-    justify-content: start;
+    .produtos{
+    display:grid;
+    grid-template-columns:repeat(5, 180px);
+    gap:18px;
 
-    width: calc(100% - 380px);
-    margin-left: 30px;
-    margin-right: 380px;
+    width:calc(100% - 340px);
+
+    margin-left:20px;
+    margin-right:340px;
 }
 #quem-somos + p {
     font-size: 18px;
@@ -257,8 +259,8 @@ img {
     position: fixed;
     top: 110px;
     right: 20px;
-    width: 260px;
-    height: 68vh;
+    width: 300px;
+    height: 80vh;
     background: white;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0,0,0,.25);
@@ -267,7 +269,7 @@ img {
     display: flex;
     z-index: 9999;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
 }
 
 #itens-carrinho{
@@ -276,6 +278,7 @@ img {
     overflow-y:auto;
     overflow-x:hidden;
     padding-right:6px;
+    scrollbar-width:thin;
 }
 
 #itens-carrinho p{
