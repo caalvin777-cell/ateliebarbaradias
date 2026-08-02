@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaveiro Borboleta Azul</title>
+
+    <link rel="stylesheet" href="../estilo.css">
+</head>
+
+<body>
+<div class="galeria" style="text-align:center;">
+    <img id="foto-principal"
+     src="../imagens/chaveiro-borboleta-azul/chaveiro-borboleta-azul1.jpeg"
+     width="280">
+
+<br><br>
+
+<img class="miniatura"
+     src="../imagens/chaveiro-borboleta-azul/chaveiro-borboleta-azul2.jpg"
+     width="90"
+     onclick="trocarFoto(this)"
+
+
+</div>
+<h1>Chaveiro Borboleta Azul</h1>
+
+<p>
+    Feito artesanalmente em amigurumi.
+</p>
+
+
+<script>
+function trocarFoto(miniatura) {
+    const principal = document.getElementById("foto-principal");
+
+    const fotoAtual = principal.src;
+    principal.src = miniatura.src;
+    miniatura.src = fotoAtual;
+}
+</script>
+</body>
+</html>
