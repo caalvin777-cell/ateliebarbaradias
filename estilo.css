@@ -255,27 +255,27 @@ img {
 }
 .painel-carrinho{
     position: fixed;
-    top: 90px;
+    top: 110px;
     right: 20px;
-    width: 330px;
-    height:85vh;
-    background:white;
+    width: 260px;
+    height: 68vh;
+    background: white;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0,0,0,.25);
-    padding: 20px;
+    padding: 14px;
     box-sizing: border-box;
     display: flex;
     z-index: 9999;
-    flex-direction:column;
-overflow: hidden;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 #itens-carrinho{
-    height:calc(80vh - 180px);
+    flex:1;
+    min-height:0;
     overflow-y:auto;
     overflow-x:hidden;
     padding-right:6px;
-}
 }
 
 #itens-carrinho p{
