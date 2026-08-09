@@ -1,4 +1,4 @@
-import { adicionarAoCarrinho } from "./carrinho.js?v=2";
+import { adicionarAoCarrinho } from "./carrinho.js?v=3";
 import { produtos } from "./produtos.js";
 
 const lista = document.getElementById("lista-produtos");

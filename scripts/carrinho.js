@@ -23,7 +23,14 @@ function adicionarAoCarrinho(produto) {
             quantidade: 1
         });
     }
+const areaCarrinho =
+    document.getElementById("carrinho");
 
+if (areaCarrinho) {
+    areaCarrinho.hidden = false;
+    areaCarrinho.style.removeProperty("display");
+    areaCarrinho.classList.remove("fechado");
+}
     atualizarCarrinho();
 }
 
