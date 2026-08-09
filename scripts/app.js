@@ -313,13 +313,23 @@ function abrirDetalhes(produto) {
             `${produto.nome} - foto ${numero}`;
 
 
-        miniatura.onerror = function () {
+       miniatua.onerror = function () {
 
-            this.onerror = null;
+    const imagem = this;
 
-            this.src =
-                `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
-        };
+    if (!imagem.dataset.tentouJpg) {
+
+        imagem.dataset.tentouJpg = "sim";
+
+        imagem.src =
+            `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
+
+    } else {
+
+        imagem.remove();
+
+    }
+};
 
 
         miniatura.addEventListener(
