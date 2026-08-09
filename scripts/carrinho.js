@@ -100,7 +100,26 @@ function atualizarCarrinho() {
     let total = 0;
 
     let html = `
-        <h2>Seu Carrinho</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h2 style="margin:0;">Seu Carrinho</h2>
+
+    <button
+        onclick="fecharCarrinho()"
+        style="
+            background:none;
+            border:none;
+            font-size:32px;
+            font-weight:bold;
+            color:#555;
+            cursor:pointer;
+            padding:0 5px;
+            line-height:1;
+        "
+        aria-label="Fechar carrinho"
+    >
+        ×
+    </button>
+</div>
 
         <label for="cepDestino">
             CEP de entrega:
@@ -249,7 +268,6 @@ function finalizarCompraWhatsApp() {
 
     let total = 0;
 
-
     carrinho.forEach(produto => {
 
         const subtotal =
@@ -263,7 +281,6 @@ function finalizarCompraWhatsApp() {
             `R$ ${subtotal.toFixed(2)}\n`;
     });
 
-
     mensagem +=
         `\nEntrega: ${
             tipoEntrega === "retirada"
@@ -271,21 +288,36 @@ function finalizarCompraWhatsApp() {
                 : "Entrega pelo Correio"
         }`;
 
-
     mensagem +=
         `\nFrete estimado: R$ ${frete.toFixed(2)}`;
 
-
     mensagem +=
         `\nTotal: R$ ${(total + frete).toFixed(2)}`;
-
 
     const url =
         "https://wa.me/5511982747585?text=" +
         encodeURIComponent(mensagem);
 
-
+    // Abre o WhatsApp
     window.open(url, "_blank");
+
+    // Fecha o carrinho
+    const areaCarrinho =
+        document.getElementById("carrinho");
+
+        if (areaCarrinho) {
+        areaCarrinho.hidden = true;
+        areaCarrinho.style.setProperty("display", "none", "important");
+    }
+
+    // Limpa a compra realizada
+    carrinho = [];
+
+    frete = 0;
+
+    tipoEntrega = "frete";
+
+    atualizarCarrinho();
 }
 
 
@@ -470,7 +502,16 @@ window.aumentarQuantidade =
 
 window.diminuirQuantidade =
     diminuirQuantidade;
+window.fecharCarrinho = function() {
 
+   const areaCarrinho =
+    document.getElementById("carrinho");
+
+if (areaCarrinho) {
+    areaCarrinho.hidden = true;
+    areaCarrinho.style.setProperty("display", "none", "important");
+}
+};
 window.finalizarCompraWhatsApp =
     finalizarCompraWhatsApp;
 

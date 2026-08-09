@@ -1,4 +1,4 @@
-import { adicionarAoCarrinho } from "./carrinho.js";
+import { adicionarAoCarrinho } from "./carrinho.js?v=2";
 import { produtos } from "./produtos.js";
 
 const lista = document.getElementById("lista-produtos");
@@ -490,6 +490,26 @@ filtroCategoria.addEventListener(
 
     }
 );
+
+// ======================================================
+// ABRIR CARRINHO
+// ======================================================
+
+const btnCarrinho =
+    document.getElementById("btnCarrinho");
+
+const areaCarrinho =
+    document.getElementById("carrinho");
+
+if (btnCarrinho && areaCarrinho) {
+
+    btnCarrinho.addEventListener("click", () => {
+
+        areaCarrinho.classList.remove("fechado");
+
+    });
+
+}
 
 
 // ======================================================

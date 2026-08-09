@@ -130,20 +130,25 @@ main{
     margin-right:340px;
 }
 
-.carrinho{
-    display:block;
-    position:fixed;
-    top:120px;
-    right:20px;
-    width:320px;
-    max-height:75vh;
-    overflow-y:auto;
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 4px 20px rgba(0,0,0,.20);
-    z-index:1000;
+.carrinho {
+    display: block;
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    width: 320px;
+    max-height: 75vh;
+    overflow-y: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.20);
+    z-index: 1000;
 }
+
+.carrinho.fechado {
+    display: none !important;
+}
+
 
 footer{
 
