@@ -1,177 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Ateliê Barbara Dias</title>
 
-        <link rel="stylesheet" href="estilo.css">
+    <meta name="description"
+          content="Amigurumis e artesanato feitos à mão com carinho.">
+
+    <link rel="stylesheet" href="estilo.css">
 
 </head>
-<meta charset="UTF-8">
+
 <body>
-    <nav>
-    <a href="#produtos">Produtos</a> |
-    <a href="#quem-somos">Quem Somos</a> |
-    <a href="#contato">Contato</a> |
 
-    <a href="#" onclick="abrirCarrinho(); return false;">
-        🛒 Carrinho
-        <span id="contador-carrinho">(0)</span>
+    <header class="cabecalho">
+
+        <div class="logo">
+
+            <img
+                src="imagens/logo.png"
+                alt="Ateliê Barbara Dias">
+
+            <h1>Ateliê Barbara Dias</h1>
+
+            <p>
+                Peças artesanais produzidas com carinho.
+            </p>
+
+        </div>
+
+    </header>
+<nav class="menu">
+
+    <a href="https://wa.me/5511982747585?text=Olá! Gostaria de mais informações sobre os produtos do Ateliê Barbara Dias." target="_blank">
+        Contato
     </a>
-</nav>
-<div style="text-align:center;margin:25px 0;">
 
-    <input
-        type="text"
-        id="pesquisa"
-        placeholder="🔍 Pesquise um produto..."
-        style="
-            width:420px;
-            max-width:90%;
-            padding:14px;
-            font-size:18px;
-            border:2px solid #d46a93;
-            border-radius:30px;
-            outline:none;
-        ">
-
-</div>
-<div id="categorias" style="text-align:center;margin:20px 0;">
-
-    <button onclick="filtrarCategoria('')">Todas</button>
-
-    <button onclick="filtrarCategoria('Acessório')">Acessórios</button>
-
-    <button onclick="filtrarCategoria('Bonecas')">Bonecas</button>
-
-    <button onclick="filtrarCategoria('Brinquedo')">Brinquedos</button>
-
-    <button onclick="filtrarCategoria('Brinquedos')">Brinquedos 2</button>
-
-    <button onclick="filtrarCategoria('Chaveiros')">Chaveiros</button>
-
-    <button onclick="filtrarCategoria('Decoração')">Decoração</button>
-
-    <button onclick="filtrarCategoria('Mochilas')">Mochilas</button>
-
-    <button onclick="filtrarCategoria('Organização')">Organização</button>
-
-    <button onclick="filtrarCategoria('Vestuário')">Vestuário</button>
-
-</div>
-</div>
-<div style="text-align:center; margin:15px 0;">
-
-    <select id="ordenacao"
-            onchange="ordenarProdutos()"
-            style="
-                padding:10px 18px;
-                border-radius:25px;
-                border:2px solid #d46a93;
-                font-size:16px;
-                cursor:pointer;
-            ">
-
-        <option value="">Ordenar por...</option>
-        <option value="menor">💰 Menor preço</option>
-        <option value="maior">💎 Maior preço</option>
-        <option value="az">🔤 Nome A → Z</option>
-        <option value="za">🔠 Nome Z → A</option>
-
-    </select>
-
-</div>
-<img src="imagens/logo.png" alt="Ateliê Barbara Dias" class="logo">
-    <h1>Ateliê Barbara Dias</h1>
-    <p>
-Amigurumis artesanais produzidos com carinho, exclusivos e feitos sob encomenda.
-</p>
-    <section id="produtos">
-    <div class="produtos" id="lista-produtos">
-
-</div>
-</section>
-<h2 id="quem-somos">Quem Somos</h2>
-
-<p>
-Produzimos amigurumis e brinquedos pedagógicos artesanais,
-feitos com carinho e sob encomenda.
-Cada peça é confeccionada manualmente e pode ser personalizada
-de acordo com sua necessidade.
-</p>
-<div id="painel-carrinho" class="painel-carrinho">
-
-    <h2>🛒 Meu Carrinho</h2>
-
-    <div id="itens-carrinho"></div>
-    <div class="frete">
-
-<h3>📦 Calcular Frete</h3>
-<label>
-    <input type="radio"
-           name="tipo-entrega"
-           value="retirada"
-           checked>
-    Retirar no Ateliê (Grátis)
-</label>
-
-<br><br>
-
-<label>
-    <input type="radio"
-           name="tipo-entrega"
-           value="correios">
-    Entrega pelos Correios
-</label>
-
-<br><br>
-<input
-    type="text"
-    id="cep"
-    placeholder="Digite seu CEP"
-    maxlength="9">
-
-<button onclick="calcularFrete()">
-    Calcular Frete
-</button>
-
-<div id="resultado-frete"></div>
-
-</div>
-
-<div class="rodape-carrinho">
-    <h3 class="total-carrinho">Total: <span id="total-carrinho">R$ 0,00</span></h3>
-   <a
-    href="#"
-    id="finalizar-whatsapp"
-    class="botao-finalizar"
-    onclick="atualizarLinkWhatsapp(); window.open(this.href,'_blank'); return false;">
-    Finalizar Pedido no WhatsApp
-</a>
-    <button onclick="fecharCarrinho()">
-        Fechar
+    <button id="btnCarrinho">
+        🛒 Carrinho
+        <span id="contadorCarrinho">0</span>
     </button>
-</div>
-</div>
-<section id="contato">
-    <h2>Contato</h2>
 
-    <p>
-        📱 WhatsApp:
-        <a href="https://wa.me/5511982747585" target="_blank">
-            (11) 98274-7585
-        </a>
-    </p>
+</nav>
+    <main>
 
-    <p>
-        📧 E-mail:
-        <a href="mailto:contato@ateliebarbaradias.com.br">
-            contato@ateliebarbaradias.com.br
-        </a>
-    </p>
-</section>
-<script type="module" src="scripts/firebase.js"></script>
-<script type="module" src="scripts/produtos.js"></script>
-<script type="module" src="scripts/app.js"></script>
-<script type="module" src="scripts/carrinho.js"></script>
+        <section class="pesquisa">
+
+            <input
+                type="text"
+                id="pesquisa"
+                placeholder="🔍 Pesquise um produto...">
+
+        </section>
+
+        <section class="filtros">
+
+            <select id="categoria">
+
+                <option value="">Todas as categorias</option>
+
+            </select>
+
+            <select id="ordenacao">
+
+                <option value="nome">Nome (A-Z)</option>
+                <option value="menor">Menor preço</option>
+                <option value="maior">Maior preço</option>
+
+            </select>
+
+        </section>
+
+        <section
+            id="lista-produtos"
+            class="lista-produtos">
+
+        </section>
+
+    </main>
+
+    <aside
+        id="carrinho"
+        class="carrinho">
+
+    </aside>
+
+    <footer>
+
+        © 2026 Ateliê Barbara Dias
+
+    </footer>
+
+    <script type="module" src="scripts/app.js"></script>
+
 </body>
+
 </html>

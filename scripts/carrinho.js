@@ -1,241 +1,508 @@
-import { db } from "./firebase.js";
-
-import {
-    collection,
-    getDocs,
-    getDoc,
-    query,
-    where,
-    updateDoc,
-    doc
-}
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 let carrinho = [];
 
-function abrirCarrinho() {
-    document.getElementById("painel-carrinho").style.display = "block";
+let frete = 0;
+let tipoEntrega = "frete";
+
+
+// ======================================================
+// ADICIONAR PRODUTO AO CARRINHO
+// ======================================================
+
+function adicionarAoCarrinho(produto) {
+
+    const item = carrinho.find(p => p.id === produto.id);
+
+    if (item) {
+
+        item.quantidade++;
+
+    } else {
+
+        carrinho.push({
+            ...produto,
+            quantidade: 1
+        });
+    }
+
     atualizarCarrinho();
 }
 
-function fecharCarrinho() {
-    document.getElementById("painel-carrinho").style.display = "none";
-}
 
-function adicionarCarrinho(id) {
+// ======================================================
+// AUMENTAR QUANTIDADE
+// ======================================================
 
-    const produto = produtos.find(p => p.id === id);
+function aumentarQuantidade(id) {
 
     const item = carrinho.find(p => p.id === id);
 
-if (item) {
-    item.quantidade++;
-} else {
-    carrinho.push({
-        ...produto,
-        quantidade: 1
-    });
-}
-
-    atualizarCarrinho();
-
-    abrirCarrinho();
-}
-
-function atualizarCarrinho() {
-
-    const lista = document.getElementById("itens-carrinho");
-
-    lista.innerHTML = "";
-
-    let total = 0;
-
-    carrinho.forEach(produto => {
-
-        total += produto.preco * produto.quantidade;
-
-    lista.innerHTML += `
-    <hr>
-<div class="item-carrinho">
-
-<img
-    src="./imagens/${produto.pasta}/${produto.pasta}1.jpg"
-    class="foto-carrinho"
-    alt="${produto.nome}"
-    onerror="
-        if(this.src.endsWith('.jpg')){
-            this.src='./imagens/${produto.pasta}/${produto.pasta}1.jpeg';
-        }else if(this.src.endsWith('.jpeg')){
-            this.src='./imagens/${produto.pasta}/${produto.pasta}1.png';
-        }else{
-            this.src='./imagens/logo.png';
-        }
-    ">
-
-<h4>${produto.nome}</h4>
-
-<p>
-R$ ${produto.preco.toFixed(2).replace(".", ",")}
-</p>
-
-<div class="controles">
-
-<button onclick="diminuirQuantidade(${produto.id})">−</button>
-
-<span>${produto.quantidade}</span>
-
-<button onclick="aumentarQuantidade(${produto.id})">+</button>
-
-</div>
-
-<p>
-
-Subtotal:
-<strong>
-
-R$ ${(produto.preco * produto.quantidade)
-.toFixed(2)
-.replace(".", ",")}
-
-</strong>
-
-</p>
-
-<button
-onclick="removerProduto(${produto.id})"
-class="botao-remover">
-
-🗑 Remover
-
-</button>
-
-</div>
-`;
-
-    });
-
-    document.getElementById("contador-carrinho").innerText =
-        `(${carrinho.length})`;
-
-    document.getElementById("total-carrinho").innerText =
-        `R$ ${total.toFixed(2).replace(".", ",")}`;
-        atualizarLinkWhatsapp();
-}
-function atualizarLinkWhatsapp(){
-
-    let mensagem = "Olá!\n\nGostaria de comprar:\n\n";
-
-    carrinho.forEach(produto => {
-
-        mensagem +=
-            "• " + produto.nome +
-            " (" + produto.quantidade + " unidade(s))\n" +
-            "R$ " +
-            (produto.preco * produto.quantidade)
-                .toFixed(2)
-                .replace(".", ",") +
-            "\n\n";
-
-    });
-
-    mensagem +=
-        "Total: " +
-        document.getElementById("total-carrinho").innerText;
-
-    document.getElementById("finalizar-whatsapp").href =
-        "https://wa.me/5511982747585?text=" +
-        encodeURIComponent(mensagem);
-
-}
-function removerProduto(id){
-
-    carrinho = carrinho.filter(produto => produto.id !== id);
-
-    atualizarCarrinho();
-
-}
-function aumentarQuantidade(id){
-
-    const item = carrinho.find(produto => produto.id === id);
-
-    if(item){
+    if (item) {
         item.quantidade++;
     }
 
     atualizarCarrinho();
-
 }
 
-function diminuirQuantidade(id){
 
-    const item = carrinho.find(produto => produto.id === id);
+// ======================================================
+// DIMINUIR QUANTIDADE
+// ======================================================
 
-    if(!item) return;
+function diminuirQuantidade(id) {
+
+    const item = carrinho.find(p => p.id === id);
+
+    if (!item) return;
 
     item.quantidade--;
 
-    if(item.quantidade <= 0){
-        removerProduto(id);
-        return;
+    if (item.quantidade <= 0) {
+
+        carrinho = carrinho.filter(p => p.id !== id);
     }
 
     atualizarCarrinho();
-
 }
 
-function calcularFrete(){
 
-    const tipoEntrega =
-        document.querySelector('input[name="tipo-entrega"]:checked').value;
+// ======================================================
+// ATUALIZAR CARRINHO
+// ======================================================
 
-    if(tipoEntrega === "retirada"){
+function atualizarCarrinho() {
 
-        document.getElementById("resultado-frete").innerHTML =
-            "📍 Retirada no Ateliê<br><strong>Frete: Grátis</strong>";
+    const contador = document.getElementById("contadorCarrinho");
+    const areaCarrinho = document.getElementById("carrinho");
+
+    if (!contador || !areaCarrinho) {
+        return;
+    }
+
+    const totalItens = carrinho.reduce(
+        (total, produto) => total + produto.quantidade,
+        0
+    );
+
+    contador.textContent = totalItens;
+
+
+    // Carrinho vazio
+    if (carrinho.length === 0) {
+
+        areaCarrinho.innerHTML = `
+            <h2>Seu carrinho está vazio</h2>
+        `;
 
         return;
     }
 
-    document.getElementById("resultado-frete").innerHTML =
-        "🔍 Calculando frete pelos Correios...";
 
+    let total = 0;
+
+    let html = `
+        <h2>Seu Carrinho</h2>
+
+        <label for="cepDestino">
+            CEP de entrega:
+        </label>
+
+        <input
+            type="text"
+            id="cepDestino"
+            placeholder="00000-000"
+            maxlength="9"
+        >
+
+        <button
+            class="btn-calcular-frete"
+            onclick="calcularFrete()">
+
+            CALCULAR FRETE
+
+        </button>
+
+        <button
+            class="btn-retirada"
+            onclick="retiradaGratis()">
+
+            RETIRADA GRÁTIS NO LOCAL
+
+        </button>
+    `;
+
+
+    // ==================================================
+    // PRODUTOS DO CARRINHO
+    // ==================================================
+
+    carrinho.forEach(produto => {
+
+        const subtotal =
+            Number(produto.preco) * produto.quantidade;
+
+        total += subtotal;
+
+        html += `
+            <div class="item-carrinho">
+
+                <img
+                    src="imagens/${produto.pasta}/${produto.pasta}1.jpeg"
+                    class="foto-carrinho"
+                    onerror="this.onerror=null; this.src='imagens/${produto.pasta}/${produto.pasta}1.jpg';"
+                >
+
+                <strong>
+                    ${produto.nome}
+                </strong>
+
+                <p>
+                    R$ ${Number(produto.preco).toFixed(2)}
+                </p>
+
+                <div class="quantidade">
+
+                    <button
+                        onclick="diminuirQuantidade(${produto.id})">
+
+                        −
+
+                    </button>
+
+                    <span>
+                        ${produto.quantidade}
+                    </span>
+
+                    <button
+                        onclick="aumentarQuantidade(${produto.id})">
+
+                        +
+
+                    </button>
+
+                </div>
+
+                <p>
+                    Subtotal:
+                    R$ ${subtotal.toFixed(2)}
+                </p>
+
+            </div>
+        `;
+    });
+
+
+    // ==================================================
+    // ENTREGA E TOTAL
+    // ==================================================
+
+    html += `
+
+        <hr>
+
+        <p>
+            <strong>Entrega:</strong>
+
+            ${
+                tipoEntrega === "retirada"
+                    ? "Retirada grátis no local"
+                    : "Informe seu CEP e calcule o frete"
+            }
+        </p>
+
+        <p>
+            <strong>Frete estimado:</strong>
+            R$ ${frete.toFixed(2)}
+        </p>
+
+        <p class="aviso-frete">
+            Valor estimado. O valor final será confirmado
+            no momento da postagem.
+        </p>
+
+        <h3>
+            Total:
+            R$ ${(total + frete).toFixed(2)}
+        </h3>
+
+        <button
+            class="btn-finalizar-whatsapp"
+            onclick="finalizarCompraWhatsApp()">
+
+            FINALIZAR COMPRA PELO WHATSAPP
+
+        </button>
+    `;
+
+
+    areaCarrinho.innerHTML = html;
 }
 
-// COLE AQUI
-document.querySelectorAll('input[name="tipo-entrega"]').forEach(opcao => {
 
-    opcao.addEventListener("change", function(){
+// ======================================================
+// FINALIZAR COMPRA PELO WHATSAPP
+// ======================================================
 
-        const cep = document.getElementById("cep");
+function finalizarCompraWhatsApp() {
 
-        if(this.value === "retirada"){
+    let mensagem =
+        "Olá! Gostaria de fazer esta compra:\n\n";
 
-            cep.disabled = true;
-            cep.value = "";
+    let total = 0;
 
-            document.getElementById("resultado-frete").innerHTML =
-                "📍 Retirada no Ateliê<br><strong>Frete Grátis</strong>";
 
-        }else{
+    carrinho.forEach(produto => {
 
-            cep.disabled = false;
+        const subtotal =
+            Number(produto.preco) * produto.quantidade;
 
-            document.getElementById("resultado-frete").innerHTML = "";
+        total += subtotal;
+
+        mensagem +=
+            `${produto.nome} - ` +
+            `${produto.quantidade} unidade(s) - ` +
+            `R$ ${subtotal.toFixed(2)}\n`;
+    });
+
+
+    mensagem +=
+        `\nEntrega: ${
+            tipoEntrega === "retirada"
+                ? "Retirada grátis no local"
+                : "Entrega pelo Correio"
+        }`;
+
+
+    mensagem +=
+        `\nFrete estimado: R$ ${frete.toFixed(2)}`;
+
+
+    mensagem +=
+        `\nTotal: R$ ${(total + frete).toFixed(2)}`;
+
+
+    const url =
+        "https://wa.me/5511982747585?text=" +
+        encodeURIComponent(mensagem);
+
+
+    window.open(url, "_blank");
+}
+
+
+// ======================================================
+// RETIRADA GRÁTIS
+// ======================================================
+
+function retiradaGratis() {
+
+    frete = 0;
+
+    tipoEntrega = "retirada";
+
+    atualizarCarrinho();
+}
+
+
+// ======================================================
+// CALCULAR FRETE ESTIMADO
+// ======================================================
+
+function calcularFrete() {
+
+    const campoCEP =
+        document.getElementById("cepDestino");
+
+    if (!campoCEP) {
+        return;
+    }
+
+
+    const cepNumeros =
+        campoCEP.value.replace(/\D/g, "");
+
+
+    // Verifica CEP
+    if (cepNumeros.length !== 8) {
+
+        alert("Digite um CEP válido.");
+
+        return;
+    }
+
+
+    tipoEntrega = "frete";
+
+
+    // ==================================================
+    // CALCULA O PESO TOTAL
+    // ==================================================
+
+    let pesoTotal = 0;
+
+
+    carrinho.forEach(produto => {
+
+        /*
+         * O sistema aceita:
+         *
+         * peso em kg
+         * ou
+         * peso em gramas
+         *
+         * Exemplo:
+         * 0.500 = 500 gramas
+         * 500 = 500 gramas
+         */
+
+        let peso =
+            Number(produto.peso);
+
+
+        // Se não houver peso cadastrado,
+        // considera 1 kg para evitar frete R$ 0,00.
+        if (!peso || peso <= 0) {
+
+            peso = 1;
 
         }
 
+
+        // Se estiver em gramas,
+        // converte para kg.
+        if (peso > 10) {
+
+            peso = peso / 1000;
+
+        }
+
+
+        pesoTotal +=
+            peso * produto.quantidade;
     });
 
-});
 
-document.getElementById("cep").disabled = true;
+    // Peso mínimo considerado
+    if (pesoTotal < 0.3) {
 
-document.getElementById("resultado-frete").innerHTML =
-    "📍 Retirada no Ateliê<br><strong>Frete Grátis</strong>";
-window.abrirCarrinho = abrirCarrinho;
-window.fecharCarrinho = fecharCarrinho;
-window.adicionarCarrinho = adicionarCarrinho;
-window.aumentarQuantidade = aumentarQuantidade;
-window.diminuirQuantidade = diminuirQuantidade;
-window.removerProduto = removerProduto;
-window.calcularFrete = calcularFrete;
-window.atualizarLinkWhatsapp = atualizarLinkWhatsapp;
+        pesoTotal = 0.3;
+    }
+
+
+    // ==================================================
+    // FRETE ESTIMADO
+    // ==================================================
+
+    /*
+     * Estimativa PAC.
+     *
+     * Origem:
+     * 03085-030
+     *
+     * Sem cobrança de mão própria.
+     *
+     * Os valores são ESTIMADOS e não representam
+     * uma cotação oficial em tempo real dos Correios.
+     */
+
+
+    if (pesoTotal <= 0.3) {
+
+        frete = 20.00;
+
+    }
+
+    else if (pesoTotal <= 0.6) {
+
+        frete = 24.00;
+
+    }
+
+    else if (pesoTotal <= 1.0) {
+
+        frete = 29.80;
+
+    }
+
+    else if (pesoTotal <= 2.0) {
+
+        frete = 39.80;
+
+    }
+
+    else if (pesoTotal <= 3.0) {
+
+        frete = 49.80;
+
+    }
+
+    else if (pesoTotal <= 5.0) {
+
+        frete = 59.80;
+
+    }
+
+    else if (pesoTotal <= 10.0) {
+
+        frete = 79.80;
+
+    }
+
+    else {
+
+        frete = 99.80;
+    }
+
+
+    // Atualiza o carrinho
+    atualizarCarrinho();
+}
+
+
+// ======================================================
+// DISPONIBILIZA AS FUNÇÕES PARA O HTML
+// ======================================================
+
+window.adicionarAoCarrinho =
+    adicionarAoCarrinho;
+
+window.aumentarQuantidade =
+    aumentarQuantidade;
+
+window.diminuirQuantidade =
+    diminuirQuantidade;
+
+window.finalizarCompraWhatsApp =
+    finalizarCompraWhatsApp;
+
+window.retiradaGratis =
+    retiradaGratis;
+
+window.calcularFrete =
+    calcularFrete;
+
+
+// ======================================================
+// INICIALIZA O CARRINHO
+// ======================================================
+
+atualizarCarrinho();
+
+
+// ======================================================
+// EXPORTA AS FUNÇÕES
+// ======================================================
+
+export {
+
+    adicionarAoCarrinho,
+
+    aumentarQuantidade,
+
+    diminuirQuantidade,
+
+    finalizarCompraWhatsApp,
+
+    retiradaGratis,
+
+    calcularFrete
+};
