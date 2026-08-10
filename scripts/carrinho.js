@@ -15,7 +15,13 @@ function abrirCarrinho() {
     if (areaCarrinho) {
 
         areaCarrinho.hidden = false;
-        areaCarrinho.style.removeProperty("display");
+
+        areaCarrinho.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
         areaCarrinho.classList.remove("fechado");
 
         atualizarCarrinho();
@@ -45,10 +51,18 @@ const areaCarrinho =
     document.getElementById("carrinho");
 
 if (areaCarrinho) {
+
     areaCarrinho.hidden = false;
-    areaCarrinho.style.removeProperty("display");
+
+    areaCarrinho.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
+
     areaCarrinho.classList.remove("fechado");
 }
+
     atualizarCarrinho();
 }
 

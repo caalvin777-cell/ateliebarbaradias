@@ -498,14 +498,13 @@ filtroCategoria.addEventListener(
 const btnCarrinho =
     document.getElementById("btnCarrinho");
 
-const areaCarrinho =
-    document.getElementById("carrinho");
-
-if (btnCarrinho && areaCarrinho) {
+if (btnCarrinho) {
 
     btnCarrinho.addEventListener("click", () => {
 
-        areaCarrinho.classList.remove("fechado");
+        if (window.abrirCarrinho) {
+            window.abrirCarrinho();
+        }
 
     });
 

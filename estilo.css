@@ -131,7 +131,7 @@ main{
 }
 
 .carrinho {
-    display: block;
+    display: none;
     position: fixed;
     top: 120px;
     right: 20px;
@@ -145,7 +145,7 @@ main{
     z-index: 1000;
 }
 
-.carrinho.fechado {
+.carrinho[hidden] {
     display: none !important;
 }
 
