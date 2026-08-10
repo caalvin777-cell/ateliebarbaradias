@@ -3,6 +3,24 @@ let carrinho = [];
 let frete = 0;
 let tipoEntrega = "frete";
 
+// ======================================================
+// ABRIR CARRINHO
+// ======================================================
+
+function abrirCarrinho() {
+
+    const areaCarrinho =
+        document.getElementById("carrinho");
+
+    if (areaCarrinho) {
+
+        areaCarrinho.hidden = false;
+        areaCarrinho.style.removeProperty("display");
+        areaCarrinho.classList.remove("fechado");
+
+        atualizarCarrinho();
+    }
+}
 
 // ======================================================
 // ADICIONAR PRODUTO AO CARRINHO
@@ -500,6 +518,8 @@ function calcularFrete() {
 // ======================================================
 // DISPONIBILIZA AS FUNÇÕES PARA O HTML
 // ======================================================
+window.abrirCarrinho =
+    abrirCarrinho;
 
 window.adicionarAoCarrinho =
     adicionarAoCarrinho;
@@ -533,7 +553,6 @@ window.calcularFrete =
 // INICIALIZA O CARRINHO
 // ======================================================
 
-atualizarCarrinho();
 
 
 // ======================================================
