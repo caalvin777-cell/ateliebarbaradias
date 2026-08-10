@@ -518,3 +518,33 @@ footer{
         padding: 15px;
     }
 }
+/* BOTÃO DO CARRINHO */
+#btnCarrinho {
+    background: #bb6f97;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 22px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,.15);
+    transition: .2s;
+}
+
+#btnCarrinho:hover {
+    background: #a95d85;
+    transform: scale(1.03);
+}
+
+/* CARRINHO NO CELULAR */
+@media (max-width: 600px) {
+
+    #btnCarrinho {
+        padding: 13px 20px;
+        font-size: 17px;
+        min-height: 46px;
+    }
+
+}
