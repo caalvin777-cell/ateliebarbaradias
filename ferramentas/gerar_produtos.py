@@ -32,7 +32,7 @@ for _, linha in df.iterrows():
 
     produtos.append(produto)
 
-saida = "const produtos = "
+saida = "export const produtos = "
 saida += json.dumps(produtos, ensure_ascii=False, indent=4)
 saida += ";"
 
