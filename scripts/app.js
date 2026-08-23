@@ -67,8 +67,8 @@ function mostrarProdutos() {
         card.innerHTML = `
             <img
                 class="foto-principal-card"
-                src="imagens/${produto.pasta}/${produto.pasta}1.jpg"
-                onerror="if(this.src.includes('.jpg')){this.src='imagens/${produto.pasta}/${produto.pasta}1.jpeg';}else if(this.src.includes('.jpeg')){this.src='imagens/${produto.pasta}/${produto.pasta}1.png';}else{this.src='imagens/logo.png';}"
+                src="imagens/${produto.pasta}1.jpg"
+                onerror="if(this.src.includes('.jpg')){this.src='imagens/${produto.pasta}1.jpeg';}else if(this.src.includes('.jpeg')){this.src='imagens/${produto.pasta}1.png';}else{this.src='imagens/logo.png';}"
                 alt="${produto.nome}"
             >
             <h3>${produto.nome}</h3>
@@ -127,8 +127,8 @@ function abrirDetalhes(produto) {
                 <img
                     id="fotoGrandeDetalhes"
                     class="foto-grande-detalhes"
-                    src="imagens/${produto.pasta}/${produto.pasta}1.jpg"
-                    onerror="if(this.src.includes('.jpg')){this.src='imagens/${produto.pasta}/${produto.pasta}1.jpeg';}else if(this.src.includes('.jpeg')){this.src='imagens/${produto.pasta}/${produto.pasta}1.png';}else{this.src='imagens/logo.png';}"
+                    src="imagens/${produto.pasta}1.jpg"
+                    onerror="if(this.src.includes('.jpg')){this.src='imagens/${produto.pasta}1.jpeg';}else if(this.src.includes('.jpeg')){this.src='imagens/${produto.pasta}1.png';}else{this.src='imagens/logo.png';}"
                     alt="${produto.nome}"
                 >
             </div>
@@ -160,16 +160,16 @@ function abrirDetalhes(produto) {
         miniatura.onerror = function () {
             if (!miniatura.dataset.tentouJpeg) {
                 miniatura.dataset.tentouJpeg = "sim";
-                miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpeg`;
+                miniatura.src = `imagens/${produto.pasta}${numero}.jpeg`;
             } else if (!miniatura.dataset.tentouPng) {
                 miniatura.dataset.tentouPng = "sim";
-                miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.png`;
+                miniatura.src = `imagens/${produto.pasta}${numero}.png`;
             } else {
                 miniatura.remove();
             }
         };
 
-        miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
+        miniatura.src = `imagens/${produto.pasta}${numero}.jpg`;
 
         miniatura.addEventListener("click", () => {
             fotoGrande.src = miniatura.src;
