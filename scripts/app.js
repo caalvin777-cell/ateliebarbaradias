@@ -2,38 +2,40 @@ import { adicionarAoCarrinho } from "./carrinho.js?v=3";
 import { produtos } from "./produtos.js";
 
 const lista = document.getElementById("lista-produtos");
-
-window.numeroWhatsApp = "5511982747585";
-
 const filtroCategoria = document.getElementById("categoria");
 const pesquisa = document.getElementById("pesquisa");
 
+window.numeroWhatsApp = "5511982747585";
+
 // ======================================================
-// CATEGORIAS
+// CATEGORIAS (COM VERIFICAÇÃO DE SEGURANÇA)
 // ======================================================
 
-const categorias = [
-    ...new Set(produtos.map(p => p.categoria))
-].sort();
+if (filtroCategoria && Array.isArray(produtos)) {
+    const categorias = [
+        ...new Set(produtos.map(p => p.categoria).filter(Boolean))
+    ].sort();
 
-categorias.forEach(categoria => {
-    const option = document.createElement("option");
-    option.value = categoria;
-    option.textContent = categoria;
-    filtroCategoria.appendChild(option);
-});
+    categorias.forEach(categoria => {
+        const option = document.createElement("option");
+        option.value = categoria;
+        option.textContent = categoria;
+        filtroCategoria.appendChild(option);
+    });
+}
 
 // ======================================================
 // MOSTRAR PRODUTOS (LISTAGEM CONTÍNUA - SEM PAGINAÇÃO)
 // ======================================================
 
 function mostrarProdutos() {
+    if (!lista) return;
     lista.innerHTML = "";
 
-    const categoriaSelecionada = filtroCategoria.value;
-    const textoPesquisa = pesquisa.value.toLowerCase().trim();
+    const categoriaSelecionada = filtroCategoria ? filtroCategoria.value : "";
+    const textoPesquisa = pesquisa ? pesquisa.value.toLowerCase().trim() : "";
 
-    let produtosFiltrados = produtos;
+    let produtosFiltrados = produtos || [];
 
     if (categoriaSelecionada !== "") {
         produtosFiltrados = produtosFiltrados.filter(
@@ -43,11 +45,11 @@ function mostrarProdutos() {
 
     if (textoPesquisa !== "") {
         produtosFiltrados = produtosFiltrados.filter(produto =>
-            produto.nome.toLowerCase().includes(textoPesquisa)
+            produto.nome && produto.nome.toLowerCase().includes(textoPesquisa)
         );
     }
 
-    // Exibe todos os produtos encontrados de uma vez só em sequência
+    // Exibe todos os produtos encontrados em sequência contínua
     produtosFiltrados.forEach(produto => {
         const card = document.createElement("div");
         card.className = "card-produto";
@@ -59,13 +61,13 @@ function mostrarProdutos() {
                 onerror="
                     if(!this.dataset.ext || this.dataset.ext === 'jpg') {
                         this.dataset.ext = 'jpeg';
-                        this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.jpeg');
+                        this.src = this.src.replace(/\\.(jpg|jpeg|png|webp)$/i, '.jpeg');
                     } else if(this.dataset.ext === 'jpeg') {
                         this.dataset.ext = 'png';
-                        this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.png');
+                        this.src = this.src.replace(/\\.(jpg|jpeg|png|webp)$/i, '.png');
                     } else if(this.dataset.ext === 'png') {
                         this.dataset.ext = 'webp';
-                        this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.webp');
+                        this.src = this.src.replace(/\\.(jpg|jpeg|png|webp)$/i, '.webp');
                     } else {
                         this.src = 'imagens/logo.png';
                     }
@@ -73,9 +75,9 @@ function mostrarProdutos() {
                 alt="${produto.nome}"
             >
             <h3>${produto.nome}</h3>
-            <p class="descricao">${produto.descricao}</p>
+            <p class="descricao">${produto.descricao || ''}</p>
             <div class="preco">
-                R$ ${Number(produto.preco).toFixed(2)}
+                R$ ${Number(produto.preco || 0).toFixed(2)}
             </div>
             <button class="btn-carrinho" type="button">
                 🛒 ADICIONAR AO CARRINHO
@@ -87,31 +89,29 @@ function mostrarProdutos() {
 
         lista.appendChild(card);
 
-        card.querySelector(".btn-carrinho").addEventListener("click", () => {
-            adicionarAoCarrinho(produto);
-        });
+        const btnCarrinho = card.querySelector(".btn-carrinho");
+        if (btnCarrinho) {
+            btnCarrinho.addEventListener("click", () => adicionarAoCarrinho(produto));
+        }
 
-        card.querySelector(".btn-detalhes").addEventListener("click", () => {
-            abrirDetalhes(produto);
-        });
+        const btnDetalhes = card.querySelector(".btn-detalhes");
+        if (btnDetalhes) {
+            btnDetalhes.addEventListener("click", () => abrirDetalhes(produto));
+        }
     });
 
-    // Remove permanentemente qualquer elemento de paginação da tela
+    // Remove permanentemente qualquer elemento de paginação
     const nav = document.getElementById("paginacao");
-    if (nav) {
-        nav.remove();
-    }
+    if (nav) nav.remove();
 }
 
 // ======================================================
-// JANELA DE DETALHES (MODAL)
+// JANELA DE DETALHES (MODAL COM MINIATURAS CORRIGIDAS)
 // ======================================================
 
 function abrirDetalhes(produto) {
     const janelaAnterior = document.getElementById("janelaDetalhes");
-    if (janelaAnterior) {
-        janelaAnterior.remove();
-    }
+    if (janelaAnterior) janelaAnterior.remove();
 
     const janela = document.createElement("div");
     janela.id = "janelaDetalhes";
@@ -129,10 +129,10 @@ function abrirDetalhes(produto) {
                     onerror="
                         if(!this.dataset.ext || this.dataset.ext === 'jpg') {
                             this.dataset.ext = 'jpeg';
-                            this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.jpeg');
+                            this.src = this.src.replace(/\\.(jpg|jpeg|png|webp)$/i, '.jpeg');
                         } else if(this.dataset.ext === 'jpeg') {
                             this.dataset.ext = 'png';
-                            this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.png');
+                            this.src = this.src.replace(/\\.(jpg|jpeg|png|webp)$/i, '.png');
                         } else {
                             this.src = 'imagens/logo.png';
                         }
@@ -141,9 +141,9 @@ function abrirDetalhes(produto) {
                 >
             </div>
             <div class="miniaturas-detalhes" id="miniaturasDetalhes"></div>
-            <p class="descricao-detalhes">${produto.descricao}</p>
+            <p class="descricao-detalhes">${produto.descricao || ''}</p>
             <div class="preco-detalhes">
-                R$ ${Number(produto.preco).toFixed(2)}
+                R$ ${Number(produto.preco || 0).toFixed(2)}
             </div>
         </div>
     `;
@@ -152,36 +152,61 @@ function abrirDetalhes(produto) {
 
     const miniaturas = document.getElementById("miniaturasDetalhes");
     const fotoGrande = document.getElementById("fotoGrandeDetalhes");
-    
-    const miniatura = document.createElement("img");
-    miniatura.className = "miniatura-detalhes";
-    miniatura.alt = produto.nome;
-    miniatura.src = produto.imagem;
 
-    miniatura.onerror = function () {
-        this.src = 'imagens/logo.png';
-    };
+    // Carrega dinamicamente as fotos da pasta do produto
+    if (miniaturas && produto.pasta) {
+        const maxFotos = produto.fotos || 5; 
 
-    miniaturas.appendChild(miniatura);
+        for (let numero = 1; numero <= maxFotos; numero++) {
+            const miniatura = document.createElement("img");
+            miniatura.className = "miniatura-detalhes";
+            miniatura.alt = `${produto.nome} - foto ${numero}`;
 
-    miniatura.addEventListener("click", () => {
-        fotoGrande.src = miniatura.src;
-    });
+            const caminhoBase = `imagens/${produto.pasta}/${produto.pasta}${numero}`;
 
-    janela.querySelector(".fechar-detalhes").addEventListener("click", () => {
-        janela.remove();
-    });
+            miniatura.onerror = function () {
+                if (!this.dataset.tentouJpeg) {
+                    this.dataset.tentouJpeg = "sim";
+                    this.src = `${caminhoBase}.jpeg`;
+                } else if (!this.dataset.tentouPng) {
+                    this.dataset.tentouPng = "sim";
+                    this.src = `${caminhoBase}.png`;
+                } else {
+                    // Se a foto número N não existir na pasta, remove do modal
+                    this.remove();
+                }
+            };
+
+            miniatura.src = `${caminhoBase}.jpg`;
+            miniaturas.appendChild(miniatura);
+
+            miniatura.addEventListener("click", () => {
+                if (fotoGrande) fotoGrande.src = miniatura.src;
+            });
+        }
+    }
+
+    const btnFechar = janela.querySelector(".fechar-detalhes");
+    if (btnFechar) {
+        btnFechar.addEventListener("click", () => janela.remove());
+    }
 
     janela.addEventListener("click", evento => {
-        if (evento.target === janela) {
-            janela.remove();
-        }
+        if (evento.target === janela) janela.remove();
     });
 }
 
-// Listeners de filtro e pesquisa
-pesquisa.addEventListener("input", () => { mostrarProdutos(); });
-filtroCategoria.addEventListener("change", () => { mostrarProdutos(); });
+// ======================================================
+// EVENT LISTENERS E INICIALIZAÇÃO
+// ======================================================
+
+if (pesquisa) {
+    pesquisa.addEventListener("input", mostrarProdutos);
+}
+
+if (filtroCategoria) {
+    filtroCategoria.addEventListener("change", mostrarProdutos);
+}
 
 const btnCarrinho = document.getElementById("btnCarrinho");
 if (btnCarrinho) {
@@ -190,4 +215,5 @@ if (btnCarrinho) {
     });
 }
 
+// Executa a listagem inicial
 mostrarProdutos();
