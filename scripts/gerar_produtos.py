@@ -1,3 +1,18 @@
+from openpyxl import load_workbook
+from pathlib import Path
+import pandas as pd
+import json
+
+BASE = Path(__file__).parent
+
+ARQUIVO_XLSX = BASE.parent / "dados" / "Dados.xlsx"
+ARQUIVO_JS = BASE.parent / "scripts" / "produtos.js"
+
+df = pd.read_excel(ARQUIVO_XLSX)
+df.columns = df.columns.str.strip()
+
+produtos = []
+
 for _, linha in df.iterrows():
 
     # Pula apenas se a linha estiver totalmente vazia
@@ -29,4 +44,17 @@ for _, linha in df.iterrows():
         "descricao": str(linha["Descrição"]).strip()
     }
 
-produtos.append(produto)  # <-- Com recuo (alinhado com as linhas de cima)
+    produtos.append(produto)
+
+saida = "export const produtos = "
+saida += json.dumps(produtos, ensure_ascii=False, indent=4)
+saida += ";"
+
+with open(ARQUIVO_JS, "w", encoding="utf-8") as f:
+    f.write(saida)
+
+print(f"{len(produtos)} produtos exportados com sucesso.")
+print(f"Arquivo criado: {ARQUIVO_JS}")
+print("\n===================================")
+print("Atualização concluída com sucesso!")
+print("===================================")
