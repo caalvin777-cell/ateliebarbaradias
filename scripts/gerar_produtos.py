@@ -1,15 +1,32 @@
-from pathlib import Path
-import json
-import pandas as pd
+for _, linha in df.iterrows():
 
-# Caminhos do projeto
-BASE = Path(__file__).parent
-ARQUIVO_EXCEL = BASE / "dados" / "Dados.xlsx"
-ARQUIVO_SAIDA = BASE / "scripts" / "produtos.js"
+    # Pula apenas se a linha estiver totalmente vazia
+    if pd.isna(linha.iloc[0]):
+        continue
 
-print("Lendo planilha:", ARQUIVO_EXCEL)
-# Lê a planilha
-df = pd.read_excel(ARQUIVO_EXCEL)
+    # Pega o ID de forma segura convertendo para int ou ignorando se não for número
+    try:
+        produto_id = int(linha["ID"])
+    except (ValueError, TypeError):
+        continue
 
-print(f"Planilha carregada com {len(df)} produtos.")
-print(df.columns.tolist())
+    preco = linha["Preço (R$)"]
+    if pd.isna(preco):
+        preco = 0
+
+    pasta = str(linha["Pasta"]).strip()
+
+    produto = {
+        "id": produto_id,
+        "nome": str(linha["Nome do Produto"]).strip(),
+        "categoria": str(linha["Categoria"]).strip(),
+        "pasta": pasta,
+        "imagem": f"imagens/{pasta}/{pasta}1.jpg",
+        "preco": float(preco),
+        "estoque": int(linha["Estoque"]),
+        "prazo": int(linha["Prazo"]),
+        "destaque": str(linha["Destaque (SIM/NÃO)"]).strip().upper(),
+        "descricao": str(linha["Descrição"]).strip()
+    }
+
+    produtos.append(produto)
