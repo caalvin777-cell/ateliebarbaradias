@@ -625,5 +625,104 @@ export const produtos = [
         "prazo": 20,
         "destaque": "NÃO",
         "descricao": "Confeccionado com fio 100% e enchimento hipoalergênico. Altura 28cm."
+    },
+    {
+        "id": 58,
+        "nome": "Sousplat Azul com Dourado",
+        "categoria": "Decoração",
+        "pasta": "sousplat-azul-dourado",
+        "preco": 45.0,
+        "estoque": 1,
+        "prazo": 15,
+        "destaque": "NÃO",
+        "descricao": "Uma peça que une beleza e personalidade á sua mesa. Diâmetro: 40cm"
+    },
+    {
+        "id": 59,
+        "nome": "Sousplat Marrom",
+        "categoria": "Decoração",
+        "pasta": "sousplat-marrom",
+        "preco": 38.0,
+        "estoque": 1,
+        "prazo": 15,
+        "destaque": "NÃO",
+        "descricao": "Uma peça que une beleza e personalidade á sua mesa. Diâmetro: 44cm"
+    },
+    {
+        "id": 60,
+        "nome": "Sousplat rosa",
+        "categoria": "Decoração",
+        "pasta": "sousplat-rosa",
+        "preco": 41.0,
+        "estoque": 1,
+        "prazo": 15,
+        "destaque": "NÃO",
+        "descricao": "Uma peça que une beleza e personalidade á sua mesa. Diâmetro: 34cm"
+    },
+    {
+        "id": 61,
+        "nome": "Kit Sousplat Encanto",
+        "categoria": "Decoração",
+        "pasta": "kit-sousplat-natural-encanto",
+        "preco": 180.0,
+        "estoque": 1,
+        "prazo": 25,
+        "destaque": "NÃO",
+        "descricao": "Uma peça que une beleza e personalidade á sua mesa. Diâmetro: 40cm, porta copo: 14cm diâm.,  porta guardanapo: 7cm diâm., caminho: 1050 X 37com."
+    },
+    {
+        "id": 62,
+        "nome": "Kit Sousplat Flor",
+        "categoria": "Decoração",
+        "pasta": "kit-sousplat-flor-marrom-natural",
+        "preco": 70.0,
+        "estoque": 1,
+        "prazo": 25,
+        "destaque": "NÃO",
+        "descricao": "Uma peça que une beleza e personalidade á sua mesa. Diâmetro: 36cm, porta copo: 16cm"
+    },
+    {
+        "id": 63,
+        "nome": "Sousplat Azul Marinho",
+        "categoria": "Decoração",
+        "pasta": "sousplat-azul-marinho",
+        "preco": 35.0,
+        "estoque": 1,
+        "prazo": 15,
+        "destaque": "NÃO",
+        "descricao": "Uma peça que une beleza e personalidade á sua mesa. Diâmetro: 38cm"
+    },
+    {
+        "id": 64,
+        "nome": "Sousplat verde",
+        "categoria": "Decoração",
+        "pasta": "sousplat-verde",
+        "preco": 30.0,
+        "estoque": 1,
+        "prazo": 15,
+        "destaque": "NÃO",
+        "descricao": "Uma peça que une beleza e personalidade á sua mesa. Diâmetro: 38cm"
+    },
+    {
+        "id": 65,
+        "nome": "Sousplat Caqui",
+        "categoria": "Decoração",
+        "pasta": "sousplat-bege-caqui",
+        "preco": 35.0,
+        "estoque": 1,
+        "prazo": 15,
+        "destaque": "NÃO",
+        "descricao": "Uma peça que une beleza e personalidade á sua mesa. Diâmetro: 36cm"
+    },
+    {
+        "id": 66,
+        "nome": "Porta Copo ou Xícara",
+        "categoria": "Decoração",
+        "pasta": "porta-copo-xicara-flor",
+        "preco": 18.0,
+        "estoque": 1,
+        "prazo": 8,
+        "destaque": "NÃO",
+        "descricao": "Porta copo ou xícara Diâmetro: 16cm"
     }
 ];
