@@ -8,9 +8,6 @@ window.numeroWhatsApp = "5511982747585";
 const filtroCategoria = document.getElementById("categoria");
 const pesquisa = document.getElementById("pesquisa");
 
-let pagina = 1;
-const porPagina = 5;
-
 // ======================================================
 // CATEGORIAS
 // ======================================================
@@ -27,7 +24,7 @@ categorias.forEach(categoria => {
 });
 
 // ======================================================
-// MOSTRAR PRODUTOS
+// MOSTRAR PRODUTOS (SEM PAGINAÇÃO - LISTAGEM CONTÍNUA)
 // ======================================================
 
 function mostrarProdutos() {
@@ -50,17 +47,8 @@ function mostrarProdutos() {
         );
     }
 
-    let paginaAtual;
-
-    if (categoriaSelecionada === "" && textoPesquisa === "") {
-        paginaAtual = produtosFiltrados;
-    } else {
-        const inicio = (pagina - 1) * porPagina;
-        const fim = inicio + porPagina;
-        paginaAtual = produtosFiltrados.slice(inicio, fim);
-    }
-
-    paginaAtual.forEach(produto => {
+    // Exibe todos os produtos filtrados em sequência
+    produtosFiltrados.forEach(produto => {
         const card = document.createElement("div");
         card.className = "card-produto";
 
@@ -108,18 +96,15 @@ function mostrarProdutos() {
         });
     });
 
-    if (categoriaSelecionada === "" && textoPesquisa === "") {
-        const nav = document.getElementById("paginacao");
-        if (nav) {
-            nav.innerHTML = "";
-        }
-    } else {
-        desenharPaginacao(produtosFiltrados);
+    // Limpa qualquer paginação residual na tela
+    const nav = document.getElementById("paginacao");
+    if (nav) {
+        nav.innerHTML = "";
     }
 }
 
 // ======================================================
-// JANELA DE DETALHES (MODAL)
+// JANELA DE DETALHES (MODAL) - CORRIGIDO AS MINIATURAS
 // ======================================================
 
 function abrirDetalhes(produto) {
@@ -165,23 +150,23 @@ function abrirDetalhes(produto) {
         miniatura.className = "miniatura-detalhes";
         miniatura.alt = `${produto.nome} - foto ${numero}`;
 
-        miniatura.onload = function () {
-            miniaturas.appendChild(miniatura);
-        };
-
+        // Tratamento de erro robusto para encontrar a extensão correta da miniatura
         miniatura.onerror = function () {
             if (!miniatura.dataset.tentouJpeg) {
                 miniatura.dataset.tentouJpeg = "sim";
                 miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpeg`;
-            } else if (!miniatura.dataset.tentouJpg) {
-                miniatura.dataset.tentouJpg = "sim";
-                miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
+            } else if (!miniatura.dataset.tentouPng) {
+                miniatura.dataset.tentouPng = "sim";
+                miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.png`;
             } else {
+                // Se esgotar as tentativas e não achar, remove a miniatura quebrada
                 miniatura.remove();
             }
         };
 
+        // Define a tentativa inicial como .jpg e já adiciona o elemento no container imediatamente
         miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
+        miniaturas.appendChild(miniatura);
 
         miniatura.addEventListener("click", () => {
             fotoGrande.src = miniatura.src;
@@ -199,36 +184,9 @@ function abrirDetalhes(produto) {
     });
 }
 
-// ======================================================
-// PAGINAÇÃO
-// ======================================================
-
-function desenharPaginacao(listaFiltrada) {
-    let nav = document.getElementById("paginacao");
-    if (!nav) {
-        nav = document.createElement("div");
-        nav.id = "paginacao";
-        lista.after(nav);
-    }
-    const totalPaginas = Math.ceil(listaFiltrada.length / porPagina);
-    nav.innerHTML = "";
-    if (totalPaginas <= 1) return;
-
-    for (let i = 1; i <= totalPaginas; i++) {
-        const botao = document.createElement("button");
-        botao.textContent = i;
-        if (i === pagina) botao.disabled = true;
-        botao.addEventListener("click", () => {
-            pagina = i;
-            mostrarProdutos();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-        nav.appendChild(botao);
-    }
-}
-
-pesquisa.addEventListener("input", () => { pagina = 1; mostrarProdutos(); });
-filtroCategoria.addEventListener("change", () => { pagina = 1; mostrarProdutos(); });
+// Listeners de filtro e pesquisa
+pesquisa.addEventListener("input", () => { mostrarProdutos(); });
+filtroCategoria.addEventListener("change", () => { mostrarProdutos(); });
 
 const btnCarrinho = document.getElementById("btnCarrinho");
 if (btnCarrinho) {
