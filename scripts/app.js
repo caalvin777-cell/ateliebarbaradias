@@ -145,36 +145,28 @@ function abrirDetalhes(produto) {
     const miniaturas = document.getElementById("miniaturasDetalhes");
     const fotoGrande = document.getElementById("fotoGrandeDetalhes");
     
-    // Carrega exatamente a quantidade de fotos cadastrada para o produto na planilha
     const quantidadeFotos = produto.fotos || 1;
 
     for (let numero = 1; numero <= quantidadeFotos; numero++) {
-    const miniatura = document.createElement("img");
-    miniatura.className = "miniatura-detalhes";
-    miniatura.alt = `${produto.nome} - foto ${numero}`;
+        const miniatura = document.createElement("img");
+        miniatura.className = "miniatura-detalhes";
+        miniatura.alt = `${produto.nome} - foto ${numero}`;
 
-    miniatura.onload = function () {
-        miniaturas.appendChild(miniatura);
-    };
+        miniatura.onload = function () {
+            miniaturas.appendChild(miniatura);
+        };
 
-    miniatura.onerror = function () {
-        if (!miniatura.dataset.tentouJpeg) {
-            miniatura.dataset.tentouJpeg = "sim";
-            miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpeg`;
-        } else if (!miniatura.dataset.tentouJpg) {
-            miniatura.dataset.tentouJpg = "sim";
-            miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
-        } else {
-            miniatura.remove();
-        }
-    };
-
-    miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
-
-    miniatura.addEventListener("click", () => {
-        fotoGrande.src = miniatura.src;
-    });
-}
+        miniatura.onerror = function () {
+            if (!miniatura.dataset.tentouJpeg) {
+                miniatura.dataset.tentouJpeg = "sim";
+                miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpeg`;
+            } else if (!miniatura.dataset.tentouJpg) {
+                miniatura.dataset.tentouJpg = "sim";
+                miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
+            } else {
+                miniatura.remove();
+            }
+        };
 
         miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
 
