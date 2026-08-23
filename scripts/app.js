@@ -153,34 +153,19 @@ function abrirDetalhes(produto) {
     const miniaturas = document.getElementById("miniaturasDetalhes");
     const fotoGrande = document.getElementById("fotoGrandeDetalhes");
     
-    const quantidadeFotos = produto.fotos || 1;
-    
-for (let numero = 1; numero <= quantidadeFotos; numero++) {
+    const quantidadeFotos = 1;
+
+    for (let numero = 1; numero <= quantidadeFotos; numero++) {
         const miniatura = document.createElement("img");
         miniatura.className = "miniatura-detalhes";
-        miniatura.alt = `${produto.nome} - foto ${numero}`;
-
-        const caminhoBase = `imagens/${produto.pasta}/${produto.pasta}${numero}`;
+        miniatura.alt = produto.nome;
+        miniatura.src = produto.imagem;
 
         miniatura.onerror = function () {
-            if (!miniatura.dataset.tentouJpeg) {
-                miniatura.dataset.tentouJpeg = "sim";
-                miniatura.src = `${caminhoBase}.jpeg`;
-            } else if (!miniatura.dataset.tentouPng) {
-                miniatura.dataset.tentouPng = "sim";
-                miniatura.src = `${caminhoBase}.png`;
-            } else {
-                miniatura.remove();
-            }
+            this.src = 'imagens/logo.png';
         };
 
-        miniatura.src = `${caminhoBase}.jpg`;
         miniaturas.appendChild(miniatura);
-
-        miniatura.addEventListener("click", () => {
-            fotoGrande.src = miniatura.src;
-        });
-    }
 
         miniatura.addEventListener("click", () => {
             fotoGrande.src = miniatura.src;
