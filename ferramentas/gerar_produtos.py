@@ -19,16 +19,17 @@ for _, linha in df.iterrows():
         preco = 0
 
     produto = {
-        "id": int(linha["ID"]),
-        "nome": str(linha["Nome do Produto"]).strip(),
-        "categoria": str(linha["Categoria"]).strip(),
-        "pasta": str(linha["Pasta"]).strip(),
-        "preco": float(preco),
-        "estoque": int(linha["Estoque"]),
-        "prazo": int(linha["Prazo"]),
-        "destaque": str(linha["Destaque (SIM/NÃO)"]).strip().upper(),
-        "descricao": str(linha["Descrição"]).strip()
-    }
+            "id": int(linha["ID"]),
+            "nome": str(linha["Nome do Produto"]).strip(),
+            "categoria": str(linha["Categoria"]).strip(),
+            "pasta": str(linha["Pasta"]).strip(),
+            "imagem": f"imagens/{str(linha['Pasta']).strip()}/1.jpg",  # <-- ADICIONE ESTA LINHA AQUI
+            "preço": float(preco),
+            "estoque": int(linha["Estoque"]),
+            "prazo": int(linha["Prazo"]),
+            "destaque": str(linha["Destaque (SIM/NÃO)"]).strip().upper(),
+            "descricao": str(linha["Descrição"]).strip()
+        }
 
     produtos.append(produto)
 
