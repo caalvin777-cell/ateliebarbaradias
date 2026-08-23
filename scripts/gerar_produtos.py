@@ -29,4 +29,4 @@ for _, linha in df.iterrows():
         "descricao": str(linha["Descrição"]).strip()
     }
 
-    produtos.append(produto)  # <-- Alinhado corretamente dentro do loop!
+produtos.append(produto)  # <-- Com recuo (alinhado com as linhas de cima)
