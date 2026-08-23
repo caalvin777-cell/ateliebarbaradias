@@ -29,4 +29,4 @@ for _, linha in df.iterrows():
         "descricao": str(linha["Descrição"]).strip()
     }
 
-    produtos.append(produto)
+    produtos.append(produto)  # <-- Alinhado corretamente dentro do loop!
