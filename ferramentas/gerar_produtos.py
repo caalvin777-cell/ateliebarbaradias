@@ -19,29 +19,19 @@ for _, linha in df.iterrows():
         preco = 0
 
     pasta = str(linha["Pasta"]).strip()
-    
-    # Descobre automaticamente se a foto 1 é .jpg ou .jpeg dentro da subpasta correta
-    extensao = "jpg"
-    foto_jpg = BASE.parent / "imagens" / pasta / f"{pasta}1.jpg"
-    foto_jpeg = BASE.parent / "imagens" / pasta / f"{pasta}1.jpeg"
-    
-    if foto_jpeg.exists() and not foto_jpg.exists():
-        extensao = "jpeg"
 
     produto = {
         "id": int(linha["ID"]),
         "nome": str(linha["Nome do Produto"]).strip(),
         "categoria": str(linha["Categoria"]).strip(),
         "pasta": pasta,
-        "imagem": f"imagens/{pasta}/{pasta}1.{extensao}",
+        "imagem": f"imagens/{pasta}/{pasta}1.jpg",
         "preco": float(preco),
         "estoque": int(linha["Estoque"]),
         "prazo": int(linha["Prazo"]),
         "destaque": str(linha["Destaque (SIM/NÃO)"]).strip().upper(),
         "descricao": str(linha["Descrição"]).strip()
     }
-
-    produtos.append(produto)
 
     produtos.append(produto)
 
