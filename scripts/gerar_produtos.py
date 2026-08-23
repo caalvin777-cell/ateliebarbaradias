@@ -31,12 +31,17 @@ for _, linha in df.iterrows():
 
     pasta = str(linha["Pasta"]).strip()
 
+    # Descobre automaticamente se a primeira foto é .jpg ou .jpeg
+    extensao = "jpg"
+    if (BASE.parent / "imagens" / pasta / f"{pasta}1.jpeg").exists():
+        extensao = "jpeg"
+
     produto = {
         "id": produto_id,
         "nome": str(linha["Nome do Produto"]).strip(),
         "categoria": str(linha["Categoria"]).strip(),
         "pasta": pasta,
-        "imagem": f"imagens/{pasta}/{pasta}1.jpg",
+        "imagem": f"imagens/{pasta}/{pasta}1.{extensao}",
         "preco": float(preco),
         "estoque": int(linha["Estoque"]),
         "prazo": int(linha["Prazo"]),
