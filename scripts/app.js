@@ -68,7 +68,20 @@ function mostrarProdutos() {
             <img
                 class="foto-principal-card"
                 src="${produto.imagem}"
-                onerror="this.src='imagens/logo.png'"
+                onerror="
+                    if(!this.dataset.ext || this.dataset.ext === 'jpg') {
+                        this.dataset.ext = 'jpeg';
+                        this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.jpeg');
+                    } else if(this.dataset.ext === 'jpeg') {
+                        this.dataset.ext = 'png';
+                        this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.png');
+                    } else if(this.dataset.ext === 'png') {
+                        this.dataset.ext = 'webp';
+                        this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.webp');
+                    } else {
+                        this.src = 'imagens/logo.png';
+                    }
+                "
                 alt="${produto.nome}"
             >
             <h3>${produto.nome}</h3>
