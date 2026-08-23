@@ -24,7 +24,7 @@ categorias.forEach(categoria => {
 });
 
 // ======================================================
-// MOSTRAR PRODUTOS (SEM PAGINAÇÃO - LISTAGEM CONTÍNUA)
+// MOSTRAR PRODUTOS (LISTAGEM CONTÍNUA - SEM PAGINAÇÃO)
 // ======================================================
 
 function mostrarProdutos() {
@@ -47,7 +47,7 @@ function mostrarProdutos() {
         );
     }
 
-    // Exibe todos os produtos filtrados em sequência
+    // Exibe todos os produtos encontrados de uma vez só em sequência
     produtosFiltrados.forEach(produto => {
         const card = document.createElement("div");
         card.className = "card-produto";
@@ -96,15 +96,15 @@ function mostrarProdutos() {
         });
     });
 
-    // Limpa qualquer paginação residual na tela
+    // Remove permanentemente qualquer elemento de paginação da tela
     const nav = document.getElementById("paginacao");
     if (nav) {
-        nav.innerHTML = "";
+        nav.remove();
     }
 }
 
 // ======================================================
-// JANELA DE DETALHES (MODAL) - CORRIGIDO AS MINIATURAS
+// JANELA DE DETALHES (MODAL)
 // ======================================================
 
 function abrirDetalhes(produto) {
@@ -126,7 +126,17 @@ function abrirDetalhes(produto) {
                     id="fotoGrandeDetalhes"
                     class="foto-grande-detalhes"
                     src="${produto.imagem}"
-                    onerror="this.src='imagens/logo.png'"
+                    onerror="
+                        if(!this.dataset.ext || this.dataset.ext === 'jpg') {
+                            this.dataset.ext = 'jpeg';
+                            this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.jpeg');
+                        } else if(this.dataset.ext === 'jpeg') {
+                            this.dataset.ext = 'png';
+                            this.src = this.src.replace(/\.(jpg|jpeg|png|webp)$/i, '.png');
+                        } else {
+                            this.src = 'imagens/logo.png';
+                        }
+                    "
                     alt="${produto.nome}"
                 >
             </div>
@@ -150,7 +160,6 @@ function abrirDetalhes(produto) {
         miniatura.className = "miniatura-detalhes";
         miniatura.alt = `${produto.nome} - foto ${numero}`;
 
-        // Tratamento de erro robusto para encontrar a extensão correta da miniatura
         miniatura.onerror = function () {
             if (!miniatura.dataset.tentouJpeg) {
                 miniatura.dataset.tentouJpeg = "sim";
@@ -159,12 +168,10 @@ function abrirDetalhes(produto) {
                 miniatura.dataset.tentouPng = "sim";
                 miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.png`;
             } else {
-                // Se esgotar as tentativas e não achar, remove a miniatura quebrada
                 miniatura.remove();
             }
         };
 
-        // Define a tentativa inicial como .jpg e já adiciona o elemento no container imediatamente
         miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
         miniaturas.appendChild(miniatura);
 
