@@ -67,8 +67,8 @@ function mostrarProdutos() {
         card.innerHTML = `
             <img
                 class="foto-principal-card"
-                src="imagens/${produto.pasta}/${produto.pasta}1.jpg"
-                onerror="if(!this.dataset.tentouJpeg){this.dataset.tentouJpeg='1';this.src='imagens/${produto.pasta}/${produto.pasta}1.jpeg';}else if(!this.dataset.tentouPng){this.dataset.tentouPng='1';this.src='imagens/${produto.pasta}/${produto.pasta}1.png';}else{this.src='imagens/logo.png';}"
+                src="${produto.imagem}"
+                onerror="this.src='imagens/logo.png'"
                 alt="${produto.nome}"
             >
             <h3>${produto.nome}</h3>
@@ -127,8 +127,8 @@ function abrirDetalhes(produto) {
                 <img
                     id="fotoGrandeDetalhes"
                     class="foto-grande-detalhes"
-                    src="imagens/${produto.pasta}/${produto.pasta}1.jpg"
-                    onerror="if(!this.dataset.tentouJpeg){this.dataset.tentouJpeg='1';this.src='imagens/${produto.pasta}/${produto.pasta}1.jpeg';}else if(!this.dataset.tentouPng){this.dataset.tentouPng='1';this.src='imagens/${produto.pasta}/${produto.pasta}1.png';}else{this.src='imagens/logo.png';}"
+                    src="${produto.imagem}"
+                    onerror="this.src='imagens/logo.png'"
                     alt="${produto.nome}"
                 >
             </div>
@@ -161,9 +161,9 @@ function abrirDetalhes(produto) {
             if (!miniatura.dataset.tentouJpeg) {
                 miniatura.dataset.tentouJpeg = "sim";
                 miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpeg`;
-            } else if (!miniatura.dataset.tentouPng) {
-                miniatura.dataset.tentouPng = "sim";
-                miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.png`;
+            } else if (!miniatura.dataset.tentouJpg) {
+                miniatura.dataset.tentouJpg = "sim";
+                miniatura.src = `imagens/${produto.pasta}/${produto.pasta}${numero}.jpg`;
             } else {
                 miniatura.remove();
             }
